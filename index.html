@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio</title>
+  <meta name="description" content="Portfolio of a computer engineering student and developer" />
+  <script>
+    // tema, sayfa çizilmeden önce ayarlansın (yanıp sönme olmasın)
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="intro" aria-hidden="true">
+    <div class="intro-name"></div>
+    <div class="intro-bar"><span></span></div>
+  </div>
+
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#hero" class="logo" data-initials></a>
+    <nav class="nav-links">
+      <a href="#about" data-i18n="nav_about"></a>
+      <a href="#experience" data-i18n="nav_experience"></a>
+      <a href="#projects" data-i18n="nav_projects"></a>
+      <a href="#github" data-i18n="nav_github"></a>
+      <a href="#contact" data-i18n="nav_contact"></a>
+    </nav>
+    <div class="nav-tools">
+      <button class="tool" data-action="lang" data-i18n-aria="lang"></button>
+      <button class="tool" data-action="theme" data-i18n-aria="theme">
+        <span class="i-sun">☀</span><span class="i-moon">☾</span>
+      </button>
+      <button class="tool mono" data-action="terminal" data-i18n-aria="terminal">&gt;_</button>
+    </div>
+  </header>
+
+  <ul class="dots"></ul>
+
+  <main>
+    <section id="hero" class="section hero">
+      <canvas class="net" aria-hidden="true"></canvas>
+      <p class="mono reveal" data-i18n="hero_hi"></p>
+      <h1 class="hero-name reveal"></h1>
+      <h2 class="hero-role reveal"><span class="typed"></span><span class="caret">|</span></h2>
+      <p class="hero-tagline reveal" data-tagline></p>
+      <div class="hero-cta reveal">
+        <a href="#projects" class="btn magnetic" data-i18n="hero_cta"></a>
+        <a href="#" class="btn ghost magnetic" data-cv data-i18n="hero_cv"></a>
+      </div>
+      <p class="term-hint mono reveal" data-i18n="term_hint"></p>
+      <a href="#about" class="scroll-hint" data-i18n-aria="scroll"><span></span></a>
+    </section>
+
+    <section id="about" class="section">
+      <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_about"></span></h2>
+      <div class="about-grid">
+        <p class="about-text reveal" data-about></p>
+        <div class="stats"></div>
+      </div>
+      <div class="marquee reveal"><div class="marquee-track"></div></div>
+    </section>
+
+    <section id="experience" class="section">
+      <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_experience"></span></h2>
+      <ol class="timeline" data-list="experience"></ol>
+    </section>
+
+    <section id="education" class="section">
+      <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_education"></span></h2>
+      <ol class="timeline" data-list="education"></ol>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="projects-head">
+        <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_projects"></span></h2>
+        <div class="carousel-controls">
+          <button class="arrow prev" data-i18n-aria="prev">←</button>
+          <button class="arrow next" data-i18n-aria="next">→</button>
+        </div>
+      </div>
+      <div class="filters reveal" role="group"></div>
+      <div class="carousel" tabindex="0"></div>
+      <div class="carousel-bar"><span></span></div>
+      <p class="mono hint" data-i18n="hint_swipe"></p>
+    </section>
+
+    <section id="github" class="section">
+      <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_github"></span></h2>
+      <div class="gh"></div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_contact"></span></h2>
+      <p class="big reveal" data-i18n="contact_big"></p>
+      <button class="email reveal magnetic" data-email></button>
+      <div class="socials reveal"></div>
+      <footer class="mono">© <span data-year></span> <span data-name></span></footer>
+    </section>
+  </main>
+
+  <div class="modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <div class="panel-grab" aria-hidden="true"></div>
+      <div class="panel-top">
+        <button class="panel-btn" data-panel="prev" data-i18n-aria="prev">←</button>
+        <button class="panel-btn" data-panel="next" data-i18n-aria="next">→</button>
+        <button class="panel-btn" data-close data-i18n-aria="close">✕</button>
+      </div>
+      <div class="panel-body"></div>
+    </aside>
+  </div>
+
+  <div class="terminal" hidden>
+    <div class="term-backdrop" data-term-close></div>
+    <div class="term-window" role="dialog" aria-modal="true" aria-label="Terminal">
+      <div class="term-bar">
+        <button class="d r" data-term-close aria-label="Close"></button><span class="d y"></span><span class="d g"></span>
+        <span class="term-title"></span>
+      </div>
+      <div class="term-out" aria-live="polite"></div>
+      <form class="term-line">
+        <label class="prompt" for="term-input"></label>
+        <input id="term-input" autocomplete="off" spellcheck="false" autocapitalize="off" />
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" role="status"></div>
+
+  <script src="data.js"></script>
+  <script src="i18n.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
