@@ -799,24 +799,73 @@ $("[data-email]").addEventListener("click", async () => {
   setTimeout(() => toast.classList.remove("show"), 2000);
 });
 
-/* ---------- açılış ---------- */
+/* ---------- açılış: selamlaşma → terminal açılışı ---------- */
+const GREETINGS = ["Hello", "Merhaba", "Hallo", "Bonjour", "Hola", "Ciao", "안녕하세요"];
+
 function runIntro(done) {
   const el = $(".intro");
-  let seen = false;
-  try { seen = sessionStorage.getItem("intro") === "1"; sessionStorage.setItem("intro", "1"); } catch {}
-  if (reduceMotion || seen) { el.remove(); return done(); }
-  $(".intro-name").innerHTML = [...S.name]
-    .map((c, i) => `<span style="--i:${i}">${c === " " ? "&nbsp;" : esc(c)}</span>`)
-    .join("");
-  introRunning = true;
-  updateLock();
-  setTimeout(() => {
+  if (reduceMotion) { el.remove(); return done(); }
+
+  let finished = false;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const onKey = (e) => {
+    if (!["Escape", "Enter", " "].includes(e.key)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    finish();
+  };
+  function finish() {
+    if (finished) return;
+    finished = true;
+    removeEventListener("keydown", onKey, true);
     el.classList.add("done");
     introRunning = false;
     updateLock();
     done();
     setTimeout(() => el.remove(), 1000);
-  }, 1900);
+  }
+
+  introRunning = true;
+  updateLock();
+  addEventListener("keydown", onKey, true);
+  $(".intro-skip").addEventListener("click", finish);
+
+  (async () => {
+    // 1) selamlaşma
+    const word = $(".intro-hello .word");
+    for (let i = 0; i < GREETINGS.length; i++) {
+      if (finished) return;
+      word.textContent = GREETINGS[i];
+      await sleep(i === 0 ? 500 : 160);
+    }
+    $(".intro-hello").classList.add("gone");
+    await sleep(380);
+
+    // 2) terminal açılışı
+    const box = $(".intro-boot");
+    box.classList.add("show");
+    const firstName = S.name.split(" ").slice(0, -1).join(" ") || S.name;
+    for (const [tpl, ok] of ui("intro_boot")) {
+      if (finished) return;
+      const text = tpl.replace("{n}", S.projects.length).replace("{name}", firstName);
+      const row = document.createElement("div");
+      box.appendChild(row);
+      for (let c = 1; c <= text.length; c++) {
+        if (finished) return;
+        row.innerHTML = `<span class="p">&gt;</span>${esc(text.slice(0, c))}<span class="cur"></span>`;
+        await sleep(ok ? 14 : 45);
+      }
+      if (ok) {
+        await sleep(200);
+        row.innerHTML = `<span class="p">&gt;</span>${esc(text)}<span class="ok">✓</span>`;
+        await sleep(120);
+      } else {
+        row.innerHTML = `<span class="p">&gt;</span><b>${esc(text)}</b><span class="cur"></span>`;
+      }
+    }
+    await sleep(700);
+    finish();
+  })();
 }
 
 render();

@@ -62,25 +62,44 @@ kbd {
 }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 
-/* ---------- açılış animasyonu ---------- */
+/* ---------- açılış: selamlaşma → terminal ---------- */
 .intro {
   position: fixed; inset: 0; z-index: 500; background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+  display: flex; align-items: center; justify-content: center;
   transition: transform .9s var(--ease);
 }
 .intro.done { transform: translateY(-100%); }
-.intro-name { display: flex; overflow: hidden; font-size: clamp(2rem, 7vw, 4.5rem); font-weight: 700; letter-spacing: -.02em; }
-.intro-name span {
-  display: inline-block; transform: translateY(110%);
-  animation: rise .7s var(--ease) forwards; animation-delay: calc(var(--i) * 45ms);
+.intro-hello {
+  display: flex; align-items: center; gap: 18px;
+  font-size: clamp(2.4rem, 8vw, 5rem); font-weight: 700; letter-spacing: -.02em;
+  transition: opacity .3s, transform .4s var(--ease);
 }
-@keyframes rise { to { transform: none; } }
-.intro-bar { width: min(260px, 60vw); height: 2px; background: var(--line); overflow: hidden; border-radius: 2px; }
-.intro-bar span {
-  display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  transform-origin: left; animation: fill 1.6s var(--ease) forwards;
+.intro-hello .dot {
+  width: .28em; height: .28em; border-radius: 50%; flex: none;
+  background: var(--accent); box-shadow: 0 0 24px var(--accent);
 }
-@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.intro-hello.gone { opacity: 0; transform: translateY(-24px); }
+.intro-boot {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(600px, calc(100% - 32px));
+  font-family: "JetBrains Mono", monospace; font-size: clamp(.85rem, 2.4vw, 1.05rem); line-height: 2.1;
+  color: var(--fg-2); opacity: 0; transition: opacity .3s;
+}
+.intro-boot.show { opacity: 1; }
+.intro-boot .p { color: var(--accent); margin-right: 8px; }
+.intro-boot .ok { color: #28c840; margin-left: 8px; }
+:root[data-theme="light"] .intro-boot .ok { color: #2e9e55; }
+.intro-boot b { color: var(--fg); font-weight: 500; font-size: 1.25em; }
+.intro-boot .cur {
+  display: inline-block; width: .6em; height: 1.1em; vertical-align: -.2em; margin-left: 4px;
+  background: var(--accent); animation: blink 1s steps(1) infinite;
+}
+.intro-skip {
+  position: absolute; right: 24px; bottom: 24px; padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--muted);
+  font-family: "JetBrains Mono", monospace; font-size: .8rem; transition: color .2s, border-color .2s;
+}
+.intro-skip:hover { color: var(--fg); border-color: var(--accent); }
 
 /* ---------- global efektler ---------- */
 .progress {
