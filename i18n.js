@@ -2,6 +2,14 @@
 window.I18N = {
   en: {
     nav_about: "About",
+    nav_lab: "Lab",
+    title_lab: "Hardware Lab",
+    lab_intro:
+      "I like knowing what happens below the code. This is a 4-bit ripple-carry adder built from logic gates: flip the input bits and watch the carry ripple through. Click a stage to look inside.",
+    lab_stage: "inside FA{i}",
+    lab_random: "Random",
+    lab_reset: "Reset",
+    lab_bit: "{row}, bit {i}",
     nav_experience: "Experience",
     nav_projects: "Projects",
     nav_github: "GitHub",
@@ -21,6 +29,7 @@ window.I18N = {
     filter_ai: "AI",
     filter_web: "Web",
     filter_systems: "Systems",
+    filter_data: "Data",
     hint_swipe: "← swipe / drag · click a card for details →",
     details: "Details",
     role: "My role",
@@ -75,6 +84,14 @@ window.I18N = {
   },
   de: {
     nav_about: "Über mich",
+    nav_lab: "Labor",
+    title_lab: "Hardware-Labor",
+    lab_intro:
+      "Mich interessiert, was unter dem Code passiert. Das ist ein 4-Bit-Ripple-Carry-Addierer aus Logikgattern: Schalte die Eingangsbits um und sieh zu, wie der Übertrag durchläuft. Klicke auf eine Stufe, um hineinzuschauen.",
+    lab_stage: "im Inneren von FA{i}",
+    lab_random: "Zufall",
+    lab_reset: "Zurücksetzen",
+    lab_bit: "{row}, Bit {i}",
     nav_experience: "Erfahrung",
     nav_projects: "Projekte",
     nav_github: "GitHub",
@@ -94,6 +111,7 @@ window.I18N = {
     filter_ai: "KI",
     filter_web: "Web",
     filter_systems: "Systeme",
+    filter_data: "Daten",
     hint_swipe: "← wischen / ziehen · Karte anklicken für Details →",
     details: "Details",
     role: "Meine Rolle",

@@ -80,6 +80,15 @@ function render() {
   $("[data-tagline]").textContent = t(S.tagline);
   $("[data-about]").textContent = t(S.about);
 
+  const status = t(S.status);
+  $("[data-status]").hidden = !status;
+  $("[data-status]").innerHTML = `<span class="pulse"></span><span>${esc(status)}</span>${
+    S.location ? `<span class="m">· ${esc(S.location)}</span>` : ""
+  }`;
+  $(".langs").innerHTML = (S.languages || [])
+    .map((l) => `<li>${esc(t(l.name))}<span>${esc(t(l.level))}</span></li>`)
+    .join("");
+
   $(".stats").innerHTML = S.stats
     .map((s) => `<div class="stat reveal"><b data-count="${s.value}" data-suffix="${esc(s.suffix)}">0</b><span>${esc(t(s.label))}</span></div>`)
     .join("");
@@ -130,6 +139,7 @@ function render() {
   applyFilter(filter, false);
   bindCardTilt();
   renderGitHub();
+  updateLab();
   if (openIndex >= 0) fillPanel(openIndex);
   observeReveals();
   onScroll();
@@ -438,7 +448,9 @@ const list = (items) =>
 
 const commands = {
   help: () => `<div class="help">${ui("term_help").map(([c, d]) => `<b>${c}</b><span class="m">${d}</span>`).join("")}</div>`,
-  whoami: () => `${esc(S.name)} <span class="m">— ${esc(t(S.roles)[0])}</span>`,
+  whoami: () =>
+    `${esc(S.name)} <span class="m">— ${esc(t(S.roles)[0])}</span>` +
+    (t(S.status) ? `\n<span class="c">●</span> ${esc(t(S.status))}` : ""),
   about: () => esc(t(S.about)),
   projects: () =>
     S.projects.map((p, i) => `<span class="c">[${i + 1}]</span> ${esc(p.title)} <span class="m">· ${esc(p.tags.join(", "))}</span>`).join("\n") +
@@ -784,6 +796,108 @@ if (finePointer && !reduceMotion) {
   $(".cursor").remove();
   $(".glow").remove();
 }
+
+/* ---------- donanım laboratuvarı: 4 bitlik ripple-carry toplayıcı ---------- */
+const lab = { a: 0b0101, b: 0b0011, sel: 0 };
+const bitOf = (n, i) => (n >> i) & 1;
+const BITS = [3, 2, 1, 0]; // en anlamlı bit solda
+
+// taşıma soldaki basamağa sırayla geçsin diye her sütuna gecikme
+const delay = (i) => `style="--d:${i * 120}ms"`;
+$(".adder").innerHTML = [
+  ...["a", "b"].map(
+    (r) =>
+      `<span class="lbl">${r.toUpperCase()}</span><span></span>` +
+      BITS.map((i) => `<button type="button" class="bit" data-in="${r}" data-bit="${i}"></button>`).join("") +
+      `<span class="dec" data-dec="${r}"></span>`
+  ),
+  `<span></span><span class="c4" ${delay(4)}><i></i></span>` +
+    BITS.map((i) => `<button type="button" class="fa" data-fa="${i}" ${delay(i)}><span>FA<sub>${i}</sub></span><i class="carry"></i></button>`).join("") +
+    `<span class="cin">← 0</span>`,
+  `<span class="lbl">S</span><span class="bit out" data-out="4" ${delay(4)}></span>` +
+    BITS.map((i) => `<span class="bit out" data-out="${i}" ${delay(i)}></span>`).join("") +
+    `<span class="dec" data-dec="s"></span>`,
+].join("");
+
+// tam toplayıcının kapı seviyesi şeması; kablolar önce, kapılar üstlerine çizilir
+const gate = {
+  and: (x, y) => `<path class="g" d="M${x} ${y}h25a20 20 0 0 1 0 40h-25z"/>`,
+  or: (x, y) => `<path class="g" d="M${x} ${y}q18 20 0 40q35 0 50-20q-15-20-50-20z"/>`,
+  xor: (x, y) => `${gate.or(x, y)}<path class="g open" d="M${x - 8} ${y}q18 20 0 40"/>`,
+};
+const WIRES = {
+  a: "M58 60H160M100 60V190H340",
+  b: "M58 80H160M120 80V210H340",
+  cin: "M58 110H260V90H340M260 110V150H340",
+  p: "M200 70H340M300 70V130H340",
+  s: "M380 80H502",
+  g2: "M375 140H405V160H440",
+  g1: "M375 200H405V180H440",
+  cout: "M480 170H502",
+};
+const JOINTS = [[100, 60, "a"], [120, 80, "b"], [260, 110, "cin"], [300, 70, "p"]];
+const PORTS = [[52, 64, "a", "end"], [52, 84, "b", "end"], [52, 114, "cin", "end"], [508, 84, "s"], [508, 174, "cout"]];
+$(".gates svg").innerHTML =
+  Object.entries(WIRES).map(([k, d]) => `<path class="w" data-sig="${k}" d="${d}"/>`).join("") +
+  JOINTS.map(([x, y, k]) => `<circle class="dot" data-sig="${k}" cx="${x}" cy="${y}" r="3.5"/>`).join("") +
+  gate.xor(150, 50) + gate.xor(330, 60) + gate.and(330, 120) + gate.and(330, 180) + gate.or(430, 150) +
+  PORTS.map(([x, y, k, anchor = "start"]) => `<text data-sig="${k}" data-port="${k}" x="${x}" y="${y}" text-anchor="${anchor}"></text>`).join("");
+
+const PORT_NAMES = { a: "a", b: "b", cin: "cᵢₙ", s: "s", cout: "cₒᵤₜ" };
+
+function updateLab() {
+  const { a, b, sel } = lab, sum = a + b;
+  const carries = [];
+  let c = 0, sig;
+  for (let i = 0; i < 4; i++) {
+    const ai = bitOf(a, i), bi = bitOf(b, i), p = ai ^ bi, cin = c;
+    c = (ai & bi) | (cin & p);
+    carries[i] = c;
+    if (i === sel) sig = { a: ai, b: bi, cin, p, s: p ^ cin, g1: ai & bi, g2: cin & p, cout: c };
+  }
+
+  $$(".adder [data-in]").forEach((el) => {
+    const v = bitOf(lab[el.dataset.in], +el.dataset.bit);
+    el.textContent = v;
+    el.classList.toggle("on", !!v);
+    el.setAttribute("aria-pressed", !!v);
+    el.setAttribute("aria-label", ui("lab_bit").replace("{row}", el.dataset.in.toUpperCase()).replace("{i}", el.dataset.bit));
+  });
+  $$(".adder [data-out]").forEach((el) => {
+    const v = bitOf(sum, +el.dataset.out);
+    el.textContent = v;
+    el.classList.toggle("on", !!v);
+  });
+  $$(".adder .fa").forEach((el) => {
+    const i = +el.dataset.fa;
+    el.classList.toggle("carry-on", !!carries[i]);
+    el.classList.toggle("sel", i === sel);
+    el.setAttribute("aria-pressed", i === sel);
+  });
+  $(".adder .c4").classList.toggle("on", !!carries[3]);
+  $('[data-dec="a"]').innerHTML = `= <b>${a}</b>`;
+  $('[data-dec="b"]').innerHTML = `= <b>${b}</b>`;
+  $('[data-dec="s"]').innerHTML = `= <b>${sum}</b>`;
+
+  $(".gates figcaption").textContent = ui("lab_stage").replace("{i}", sel);
+  $$(".gates [data-sig]").forEach((el) => el.classList.toggle("on", !!sig[el.dataset.sig]));
+  $$(".gates [data-port]").forEach((el) => (el.textContent = `${PORT_NAMES[el.dataset.port]} = ${sig[el.dataset.port]}`));
+}
+
+$(".adder").addEventListener("click", (e) => {
+  const inBit = e.target.closest("[data-in]"), fa = e.target.closest(".fa");
+  if (inBit) lab[inBit.dataset.in] ^= 1 << +inBit.dataset.bit;
+  else if (fa) lab.sel = +fa.dataset.fa;
+  else return;
+  updateLab();
+});
+$(".lab-tools").addEventListener("click", (e) => {
+  const act = e.target.closest("[data-lab]")?.dataset.lab;
+  if (act === "random") Object.assign(lab, { a: Math.floor(Math.random() * 16), b: Math.floor(Math.random() * 16) });
+  else if (act === "reset") Object.assign(lab, { a: 0, b: 0, sel: 0 });
+  else return;
+  updateLab();
+});
 
 /* ---------- e-postayı kopyala ---------- */
 const toast = $(".toast");

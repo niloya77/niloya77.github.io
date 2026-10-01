@@ -8,6 +8,19 @@ window.SITE = {
   cv: "#", // örn: "cv.pdf"
   location: "Frankfurt am Main, Germany",
 
+  // Hero'daki yeşil noktalı durum satırı. Boş bırakırsan ("") gizlenir.
+  status: {
+    en: "Open to working student roles & internships",
+    de: "Offen für Werkstudentenstellen & Praktika",
+  },
+  // Hakkımda bölümünde görünür.
+  languages: [
+    { name: { en: "Turkish", de: "Türkisch" }, level: { en: "native", de: "Muttersprache" } },
+    { name: { en: "German", de: "Deutsch" }, level: "C1" },
+    { name: { en: "English", de: "Englisch" }, level: "C1" },
+    { name: { en: "Spanish", de: "Spanisch" }, level: "B1" },
+  ],
+
   roles: {
     en: ["Computer Engineering Student at TU Darmstadt"],
     de: ["Computer Engineering @ TU Darmstadt"],
@@ -29,13 +42,64 @@ window.SITE = {
   // Boş bırakırsan ([]) bu bölüm sitede gizlenir.
   experience: [
     {
-      period: { en: "2025 — Present", de: "2025 — heute" },
-      title: { en: "Position Title", de: "Positionsbezeichnung" },
-      place: "Company / Institute",
+      period: "10/2025 — 03/2026",
+      title: { en: "Lab Course: Prompt Injection Mitigation in LLMs", de: "Praktikum: Mitigation von Prompt Injection in LLMs" },
+      place: "System Security Lab · TU Darmstadt",
       detail: {
-        en: "What you worked on, in one or two sentences.",
-        de: "Woran du gearbeitet hast, in ein bis zwei Sätzen.",
+        en: "Developed an approach that separates CONTROL and DATA inputs to prevent prompt injection. Fine-tuned an open-source LLM with LoRA (PEFT), built a small dataset of normal and adversarial examples, and evaluated robustness and model quality.",
+        de: "Entwicklung eines Ansatzes zur Trennung von CONTROL- und DATA-Eingaben gegen Prompt Injection. Fine-Tuning eines Open-Source-LLMs mit LoRA (PEFT), Erstellung eines Datensatzes mit normalen und adversarialen Beispielen sowie Evaluation von Robustheit und Modellqualität.",
       },
+    },
+    {
+      period: "10/2025 — 03/2026",
+      title: { en: "Bachelor Team Project", de: "Bachelorpraktikum" },
+      place: "TU Darmstadt",
+      detail: {
+        en: "Built a web application for managing and organizing the public lecture series “Saturday Morning Physics (SMP)” with HTML, CSS, JavaScript/TypeScript and Python.",
+        de: "Entwicklung einer Webapplikation für die Verwaltung und Organisation der Öffentlichkeitsveranstaltung „Saturday Morning Physics (SMP)“ mit HTML, CSS, JavaScript/TypeScript und Python.",
+      },
+    },
+    {
+      period: "04/2025 — 09/2025",
+      title: { en: "Tutor, Computer Organization", de: "Tutorin, Rechnerorganisation" },
+      place: "TU Darmstadt",
+      detail: {
+        en: "Led exercise sessions, graded assignments and held oral tests. Helped students with computer architecture, assembly language and low-level CPU programming.",
+        de: "Leitung von Übungsstunden, Korrektur von Übungsblättern und Durchführung von Testaten. Unterstützung bei Fragen zu Rechnerarchitektur, Assemblersprache und CPU-naher Programmierung.",
+      },
+    },
+    {
+      period: "10/2024 — 03/2025",
+      title: { en: "Teaching Internship, Compiler Construction", de: "Praktikum in der Lehre, Einführung in den Compilerbau" },
+      place: "TU Darmstadt",
+      detail: {
+        en: "Created and graded exercise sheets, held oral tests and led exercise sessions. Taught the fundamentals of lexers, parsers and code generation.",
+        de: "Erstellung und Korrektur von Übungsblättern, Durchführung von Testaten und Leitung von Übungsstunden. Vermittlung von Grundlagen zu Lexern, Parsern und Code-Generierung.",
+      },
+    },
+    {
+      period: "06/2024 — 10/2025",
+      title: { en: "Student Assistant, Reactive Flows and Measurement Technology", de: "Studentische Hilfskraft, Reaktive Strömungen und Messtechnik" },
+      place: "TU Darmstadt",
+      detail: {
+        en: "Processed payments, invoices and domestic and international business trips. Built Excel sheets to track budgets, income and expenses of the institute's projects.",
+        de: "Bearbeitung von unbaren Auszahlungen, Rechnungen sowie In- und Auslandsdienstreisen. Erstellung von Excel-Tabellen zur Berechnung von Budgets, Einnahmen und Ausgaben der Institutsprojekte.",
+      },
+    },
+    {
+      period: "05/2024 — 10/2025",
+      title: { en: "Student Assistant, Student Services", de: "Studentische Hilfskraft, Studierendenservice" },
+      place: "TU Darmstadt",
+      detail: {
+        en: "Processed de-registration and application requests, prepared documents such as diplomas and enrollment certificates, and answered student questions on the hotline.",
+        de: "Durchführung von Exmatrikulations- und Bewerbungsanträgen, Vorbereitung von Unterlagen wie Diplom und Studienbescheinigung sowie Beantwortung von Fragen über die Hotline.",
+      },
+    },
+    {
+      period: "10/2020 — 02/2021",
+      title: { en: "Student Advisor", de: "Beraterin für Studienangelegenheiten" },
+      place: "Bahçeşehir University · Istanbul",
+      detail: "",
     },
   ],
 
@@ -50,9 +114,21 @@ window.SITE = {
       },
     },
     {
-      period: "2018 — 2019",
+      period: "01/2022 — 03/2022",
+      title: { en: "German Language Course", de: "Sprachkurs Deutsch" },
+      place: "TU Clausthal",
+      detail: "",
+    },
+    {
+      period: "2019 — 2021",
+      title: "B.Sc. Software Engineering",
+      place: "Bahçeşehir University · Istanbul",
+      detail: "",
+    },
+    {
+      period: "2015 — 2019",
       title: { en: "High School", de: "Schule" },
-      place: "Besiktas Ugur Private High School",
+      place: "Beşiktaş Uğur Private High School",
       detail: {
         en: "Math-Science track, graduated with 95/100 GPA.",
         de: "Mathematisch-naturwissenschaftlicher Zweig, Abschluss mit 95/100 Punkten.",
@@ -63,6 +139,22 @@ window.SITE = {
   // category: filtrelerde kullanılır → "ai", "web", "systems"
   // role: projede senin yaptığın kısım (boşsa detay ekranında gösterilmez)
   projects: [
+    {
+      title: "German Electricity Market Pipeline",
+      category: ["data"],
+      desc: {
+        en: "Data pipeline exploring when electricity in Germany is cheapest and greenest, and how wind and solar affect the price.",
+        de: "Datenpipeline, die untersucht, wann Strom in Deutschland am günstigsten und grünsten ist und wie Wind und Solar den Preis beeinflussen.",
+      },
+      details: {
+        en: "Ingests electricity market data from SMARD and weather data from Open-Meteo with Python and stores it as Parquet.\n\nThe data is transformed with dbt on DuckDB in bronze, silver and gold layers and orchestrated with Dagster. A dashboard is in progress.",
+        de: "Lädt Strommarktdaten von SMARD und Wetterdaten von Open-Meteo mit Python und speichert sie als Parquet.\n\nDie Daten werden mit dbt auf DuckDB in Bronze-, Silver- und Gold-Schichten transformiert und mit Dagster orchestriert. Ein Dashboard ist in Arbeit.",
+      },
+      role: "",
+      tags: ["Python", "dbt", "DuckDB", "Dagster", "Parquet"],
+      links: [{ label: "Code", url: "https://github.com/niloya77/dataengineer" }],
+      color: "#6a4cf0",
+    },
     {
       title: "AI Code Research Tracker",
       category: ["ai"],
@@ -149,7 +241,7 @@ window.SITE = {
   ],
 
   skills: [
-    "C++", "Python", "JavaScript", "TypeScript", "React", "Node.js",
+    "C++", "Python", "Java", "JavaScript", "TypeScript", "React", "Node.js",
     "Git", "Linux", "OpenMP", "CMake", "SQL", "Docker",
   ],
 

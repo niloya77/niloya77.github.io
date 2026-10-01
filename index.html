@@ -34,6 +34,7 @@
     <a href="#hero" class="logo" data-initials></a>
     <nav class="nav-links">
       <a href="#about" data-i18n="nav_about"></a>
+      <a href="#lab" data-i18n="nav_lab"></a>
       <a href="#experience" data-i18n="nav_experience"></a>
       <a href="#projects" data-i18n="nav_projects"></a>
       <a href="#github" data-i18n="nav_github"></a>
@@ -57,6 +58,7 @@
       <h1 class="hero-name reveal"></h1>
       <h2 class="hero-role reveal"><span class="typed"></span><span class="caret">|</span></h2>
       <p class="hero-tagline reveal" data-tagline></p>
+      <p class="status reveal" data-status></p>
       <div class="hero-cta reveal">
         <a href="#projects" class="btn magnetic" data-i18n="hero_cta"></a>
         <a href="#" class="btn ghost magnetic" data-cv data-i18n="hero_cv"></a>
@@ -68,10 +70,32 @@
     <section id="about" class="section">
       <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_about"></span></h2>
       <div class="about-grid">
-        <p class="about-text reveal" data-about></p>
+        <div>
+          <p class="about-text reveal" data-about></p>
+          <ul class="langs reveal"></ul>
+        </div>
         <div class="stats"></div>
       </div>
       <div class="marquee reveal"><div class="marquee-track"></div></div>
+    </section>
+
+    <section id="lab" class="section">
+      <h2 class="title reveal"><span class="mono num"></span> <span data-i18n="title_lab"></span></h2>
+      <p class="lab-intro reveal" data-i18n="lab_intro"></p>
+      <div class="lab-grid">
+        <div class="reveal">
+          <div class="adder"></div>
+          <div class="lab-tools">
+            <button type="button" data-lab="random" data-i18n="lab_random"></button>
+            <button type="button" data-lab="reset" data-i18n="lab_reset"></button>
+          </div>
+        </div>
+        <figure class="gates reveal">
+          <figcaption class="mono"></figcaption>
+          <svg viewBox="0 0 570 230" role="img" aria-label="Full adder"></svg>
+          <p class="eq mono">s = a ⊕ b ⊕ cᵢₙ &nbsp;·&nbsp; cₒᵤₜ = a·b + cᵢₙ·(a ⊕ b)</p>
+        </figure>
+      </div>
     </section>
 
     <section id="experience" class="section">
